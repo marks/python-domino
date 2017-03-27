@@ -41,6 +41,9 @@ class _Routes:
     def collaborators_remove(self):
         return self._build_old_project_url() + '/removeCollaborator'
 
+    def collaborators_change_role(self):
+        return self._build_old_project_url() + '/changeCollaboratorProjectRole'
+
     # Endpoint URLs
     def _build_endpoint_url(self):
         return self.host + '/v1/' + \

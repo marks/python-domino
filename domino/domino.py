@@ -9,6 +9,9 @@ import os
 import logging
 import requests
 
+VALID_PROJECT_ROLES = ["Contributor", "ResultsConsumer",
+                       "LauncherUser", "ProjectImporter"]
+
 
 class Domino:
     def __init__(self, project, api_key=None, host=None):
@@ -39,9 +42,7 @@ class Domino:
                 variable.")
 
         # Get version
-        self._version = self.deployment_version().get("version")
-        print(self._version)
-
+        self._version = str(self.deployment_version().get("version"))
 
     def _configure_logging(self):
         logging.basicConfig(level=logging.INFO)
@@ -120,6 +121,7 @@ class Domino:
         }
         response = requests.post(url, auth=('', self._api_key), data=request,
                                  allow_redirects=False)
+
         disposition = parse_play_flash_cookie(response)
         if disposition.get("error"):
             raise Exception(disposition.get("message"))
@@ -141,6 +143,28 @@ class Domino:
         response = requests.post(url, auth=('', self._api_key), data=request,
                                  allow_redirects=False)
         disposition = parse_play_flash_cookie(response)
+
+        if disposition.get("error"):
+            raise Exception(disposition.get("message"))
+        else:
+            return disposition
+
+    def collaborators_change_role(self, username, newRole):
+        self.requires_at_least("1.53.0.0")
+
+        # Validate the given role is valid
+        if newRole not in VALID_PROJECT_ROLES:
+            raise Exception("Invalid role. Choices are: {}".format(
+                            ', '.join(VALID_PROJECT_ROLES)))
+
+        url = self._routes.collaborators_change_role()
+        request = {
+            'collaboratorUsername': username,
+            'projectRole': newRole
+        }
+        response = requests.post(url, auth=('', self._api_key), data=request)
+        disposition = parse_http_status_code_dispoition(response)
+
         if disposition.get("error"):
             raise Exception(disposition.get("message"))
         else:
@@ -179,3 +203,13 @@ def parse_play_flash_cookie(response):
     else:
         error = False
     return dict(messageType=messageType, message=message, error=error)
+
+
+def parse_http_status_code_dispoition(response):
+    if response.status_code == 200:
+        error = False
+        messageType = "dominoFlashMessage"
+    else:
+        error = True
+        messageType = "dominoFlashError"
+    return dict(messageType=messageType, message=response.content, error=error)
