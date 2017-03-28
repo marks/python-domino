@@ -67,3 +67,12 @@ class _Routes:
 
     def projects_list(self):
         return self.host + '/project'
+
+    def project_metadata(self, owner_username, project_name):
+        # use instnatiated Domino owner/user if not specified
+        if owner_username is None:
+            owner_username = self._owner_username
+        if project_name is None:
+            project_name = self._project_name
+
+        return self.host + '/project/' + owner_username + '/' + project_name

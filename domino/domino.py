@@ -116,6 +116,10 @@ class Domino:
         url = self._routes.projects_list()
         return self._get(url)
 
+    def project_metadata(self, owner_username=None, project_name=None):
+        url = self._routes.project_metadata(owner_username, project_name)
+        return self._get(url)
+
     def project_create(self, owner_username, project_name):
         self.requires_at_least("1.53.0.0")
         url = self._routes.project_create()

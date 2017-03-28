@@ -7,3 +7,7 @@ domino = Domino("marks/quick-start",
 
 projects = domino.projects_list()
 print(projects)
+
+metadata = domino.project_metadata("marks", "fromapi3")
+print("Project tags:")
+print(metadata.get("tagIds", []))
