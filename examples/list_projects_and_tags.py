@@ -13,3 +13,7 @@ tagIds = metadata.get("tagIds", [])
 print("Project has {} tag(s):".format(len(tagIds)))
 for tagId in tagIds:
     print(domino.tag_metadata(tagId))
+
+all_tags = domino.tags_list()
+print("All {} tags: ".format(len(all_tags)))
+print(all_tags)

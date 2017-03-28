@@ -182,6 +182,10 @@ class Domino:
         url = self._routes.tag_metadata(tagId)
         return self._get(url)
 
+    def tags_list(self):
+        url = self._routes.tags_list()
+        return self._get(url)
+
 
     # Helper methods
     def _get(self, url):
