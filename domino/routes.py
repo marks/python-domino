@@ -76,3 +76,6 @@ class _Routes:
             project_name = self._project_name
 
         return self.host + '/project/' + owner_username + '/' + project_name
+
+    def tag_metadata(self, tagId):
+        return self.host + '/projectTags/' + tagId

@@ -9,5 +9,7 @@ projects = domino.projects_list()
 print(projects)
 
 metadata = domino.project_metadata("marks", "fromapi3")
-print("Project tags:")
-print(metadata.get("tagIds", []))
+tagIds = metadata.get("tagIds", [])
+print("Project has {} tag(s):".format(len(tagIds)))
+for tagId in tagIds:
+    print(domino.tag_metadata(tagId))

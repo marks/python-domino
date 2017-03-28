@@ -166,7 +166,8 @@ class Domino:
                             ', '.join(VALID_PROJECT_ROLES)))
 
         url = self._routes.collaborators_change_role()
-        request = {'collaboratorUsername': username,
+        request = {
+            'collaboratorUsername': username,
             'projectRole': newRole
         }
         response = requests.post(url, auth=('', self._api_key), data=request)
@@ -176,6 +177,11 @@ class Domino:
             raise Exception(disposition.get("message"))
         else:
             return disposition
+
+    def tag_metadata(self, tagId):
+        url = self._routes.tag_metadata(tagId)
+        return self._get(url)
+
 
     # Helper methods
     def _get(self, url):
