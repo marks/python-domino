@@ -64,3 +64,6 @@ class _Routes:
 
     def project_create(self):
         return self.host + '/new'
+
+    def projects_list(self):
+        return self.host + '/project'

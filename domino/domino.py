@@ -112,6 +112,10 @@ class Domino:
         url = self._routes.deployment_version()
         return self._get(url)
 
+    def projects_list(self):
+        url = self._routes.projects_list()
+        return self._get(url)
+
     def project_create(self, owner_username, project_name):
         self.requires_at_least("1.53.0.0")
         url = self._routes.project_create()
@@ -158,8 +162,7 @@ class Domino:
                             ', '.join(VALID_PROJECT_ROLES)))
 
         url = self._routes.collaborators_change_role()
-        request = {
-            'collaboratorUsername': username,
+        request = {'collaboratorUsername': username,
             'projectRole': newRole
         }
         response = requests.post(url, auth=('', self._api_key), data=request)
