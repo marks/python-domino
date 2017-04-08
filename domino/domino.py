@@ -186,7 +186,6 @@ class Domino:
         url = self._routes.tags_list()
         return self._get(url)
 
-
     # Helper methods
     def _get(self, url):
         return requests.get(url, auth=('', self._api_key)).json()
